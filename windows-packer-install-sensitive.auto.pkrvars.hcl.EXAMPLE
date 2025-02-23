@@ -1,0 +1,26 @@
+/*
+    DESCRIPTION:
+    Build account variables used for all builds.
+    - Variables are passed to and used by guest operating system configuration files (e.g., ks.cfg, autounattend.xml).
+    - Variables are passed to and used by configuration scripts.
+*/
+
+// Default Account Credentials
+build_passwd             = "B9g4CSFbq6@kpB" // Administrator account password
+service_user             = "SERVICE_USER"   // WinRM username for the local admin user to be provisioned
+service_passwd           = "5ue6t2xkHE@Fhr" // Super secure password for lcoal admin user
+
+/*
+    DESCRIPTION:
+    Proxmox WebUI variables used for Linux builds. 
+    - Variables are use by the source blocks.
+*/
+
+//Proxmox Credentials
+proxmox_host             = "10.x.x.x"
+proxmox_node             = "PROXMOXNODE"
+proxmox_user             = "root@pam!APIKEY"
+proxmox_apikey           = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX"
+
+// VM Config - if required, defaults to nothing
+vlan_tag                 = ""

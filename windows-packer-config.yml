@@ -1,0 +1,25 @@
+################################
+## /windows-packer-config.yml ##
+################################
+#
+# Ansible playbook to be ran against hosts after Packer provisioning.
+
+---
+- hosts: all
+  gather_facts: yes
+  become: yes
+  vars:
+    ansible_shell_type: "powershell"
+    ansible_shell_executable: None
+    ansible_password: "{{ admin_passwd }}"
+    ansible_winrm_transport: "ntlm"
+    ansible_port: "5986"
+    ansible_winrm_server_cert_validation: "ignore"
+  tasks:
+    - name: Create {{ service_user }} User account
+      win_user:
+        name: '{{ service_user }}'
+        password: '{{ service_passwd }}'
+        state: present
+        groups:
+          - Administrators
