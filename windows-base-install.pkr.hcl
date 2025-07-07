@@ -62,6 +62,11 @@ variable "service_passwd" {
     sensitive = true
 }
 
+variable "ansible_provisioner_playbook_path" {
+    type = string
+    default = "windows-packer-config.yml"
+}
+
 source "proxmox-iso" "windows-tpl" {
 
     proxmox_url = "https://${var.proxmox_host}:8006/api2/json"
@@ -155,7 +160,7 @@ build {
 
   provisioner "ansible" {
     user          = "Administrator"
-    playbook_file = "${path.cwd}/windows-packer-config.yml"
+    playbook_file = "${path.cwd}/${var.ansible_provisioner_playbook_path}"
     use_proxy     = false
     extra_arguments   = [
       "--connection", "winrm",
