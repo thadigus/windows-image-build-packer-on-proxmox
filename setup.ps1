@@ -48,6 +48,9 @@ else {
     Write-Error "QEMU Guest Agent installer not found at $qemuInstaller. Skipping installation."
 }
 
+# WinRM Configuration
+Write-Host "Configuring WinRM..."
+
 # Switch network connection to private mode
 $profile = Get-NetConnectionProfile
 Set-NetConnectionProfile -Name $profile.Name -NetworkCategory Private
@@ -57,10 +60,26 @@ $file = "$env:temp\ConfigureRemotingForAnsible.ps1"
 (New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
 powershell.exe -ExecutionPolicy ByPass -File $file
 
+# Open firewall port 5985 for WinRM over HTTP
+New-NetFirewallRule `
+    -Name "WinRM-HTTP" `
+    -DisplayName "Windows Remote Management (HTTP-In)" `
+    -Protocol TCP `
+    -LocalPort 5985 `
+    -Direction Inbound `
+    -Action Allow `
+    -Profile Any
+
+# Open firewall port 5986 for WinRM over HTTPS
+New-NetFirewallRule `
+    -Name "WinRM-HTTPS" `
+    -DisplayName "Windows Remote Management (HTTPS-In)" `
+    -Protocol TCP `
+    -LocalPort 5986 `
+    -Direction Inbound `
+    -Action Allow `
+    -Profile Any
+
 # Reset auto logon count
 Write-Host "Resetting auto logon count..."
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' -Name AutoLogonCount -Value 0
-
-# WinRM Configuration
-Write-Host "Configuring WinRM..."
-winrm quickconfig -quiet

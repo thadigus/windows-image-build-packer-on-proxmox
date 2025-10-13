@@ -128,7 +128,7 @@ source "proxmox-iso" "windows-tpl" {
       vlan_tag          = var.vlan_tag
       model             = "virtio"
     }
-      # WinRM
+    # WinRM
     communicator          = "winrm"
       winrm_username        = "Administrator"
       winrm_password        = var.build_passwd
@@ -146,6 +146,23 @@ source "proxmox-iso" "windows-tpl" {
 build {
   sources = ["source.proxmox-iso.windows-tpl"]
 
+  provisioner "ansible" {
+    user          = "Administrator"
+    playbook_file = "${path.cwd}/${var.ansible_provisioner_playbook_path}"
+    use_proxy     = false
+    extra_arguments = [
+      "--connection", "winrm",
+      "--extra-vars", "admin_passwd='${var.build_passwd}' service_user='${var.service_user}' service_passwd='${var.service_passwd}' ansible_connection='winrm' ansible_winrm_transport='ntlm' ansible_winrm_server_cert_validation='ignore' ansible_user='Administrator' ansible_password='${var.build_passwd}'"
+    ]
+    ansible_env_vars = [
+      "ANSIBLE_CONFIG=${path.cwd}/ansible.cfg",
+      "ANSIBLE_BECOME_METHOD=runas",
+      "ANSIBLE_BECOME_USER=Administrator",
+      "ANSIBLE_BECOME_PASS=${var.build_passwd}"
+    ]
+  }
+
+  /* - Removing the Windows Update Provisioner for now because it seems to have a ton of issues.
   provisioner "windows-update" {
     search_criteria = "IsInstalled=0"
     filters = [
@@ -154,23 +171,8 @@ build {
     ]
     update_limit = 25
   }
+  */
 
   provisioner "windows-restart" {
   }
-
-  provisioner "ansible" {
-    user          = "Administrator"
-    playbook_file = "${path.cwd}/${var.ansible_provisioner_playbook_path}"
-    use_proxy     = false
-    extra_arguments   = [
-      "--connection", "winrm",
-      "--extra-vars", "admin_passwd='${var.build_passwd}' service_user='${var.service_user}' service_passwd='${var.service_passwd}'"
-    ]
-    ansible_env_vars = [
-      "ANSIBLE_CONFIG=${path.cwd}/ansible.cfg",
-      "ANSIBLE_BECOME_METHOD=runas",
-      "ANSIBLE_BECOME_USER=Administrator",
-      "ANSIBLE_BECOME_PASS=${var.build_passwd}"
-    ]
-  } 
 } 
