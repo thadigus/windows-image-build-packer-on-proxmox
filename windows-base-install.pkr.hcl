@@ -67,6 +67,16 @@ variable "ansible_provisioner_playbook_path" {
     default = "windows-packer-config.yml"
 }
 
+variable "windows_boot_iso_path" {
+    type = string
+    default = "local:iso/WindowsServer2025_x64_en-us.iso"
+}
+
+variable "windows_virtio_iso_path" {
+    type = string
+    default = "local:iso/WindowsServer2025_x64_en-us.iso"
+}
+
 source "proxmox-iso" "windows-tpl" {
 
     proxmox_url = "https://${var.proxmox_host}:8006/api2/json"
@@ -75,7 +85,7 @@ source "proxmox-iso" "windows-tpl" {
     boot_iso {
       type = "sata"
       index = 1
-      iso_file = "local:iso/WindowsServer2025_x64_en-us.iso"
+      iso_file = var.windows_boot_iso_path
       unmount = true
     }
     additional_iso_files {
@@ -92,7 +102,7 @@ source "proxmox-iso" "windows-tpl" {
     additional_iso_files {
       type = "sata"
       index = 3
-      iso_file = "local:iso/virtio-win.iso"
+      iso_file = var.windows_virtio_iso_path
       unmount = true
     }
     vm_name = "windows-base-image"

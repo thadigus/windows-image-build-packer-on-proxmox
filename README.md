@@ -11,6 +11,8 @@ Due to the many requirements for this process, it is important to make sure that
 - `local:iso/WindowsServer2025_x64_en-us.iso` - <https://www.microsoft.com/en-us/evalcenter/download-windows-server-2025>
 - `local:iso/virtio-win.iso` - <https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso>
 
+Additionally, you can override either of these paths in the sensitive variables file if you would like to store the ISOs in a different location.
+
 ### Sample `autounattend.xml` File
 
 The autounattend.xml file is kept extremely simple for this setup. The intention is to get the minimum viable configuration necessary in order to allow Ansible to come into the VM and perform the rest of the configuration. This Ansible-first decision was made in order to integrate well with other infrastructure as code projects. A sample XML file is shown below but it can be changes to suit your needs. Please note the `${build_passwd}` variable that is used to denote a variable that Packer should fill into the file at runtime before it is processed and placed on the ISO.
@@ -187,7 +189,9 @@ proxmox_apikey           = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX"
 vlan_tag                 = ""
 
 // Optional Override for path to Ansible playbook (assumes you're starting at top level directory on your Git repo)
-// ansible_provisioner_playbook_path = "
+// ansible_provisioner_playbook_path = ""
+// Optional override on a different ISO location
+// ubuntu_boot_iso_path = "local:iso/WindowsServer2025_x64_en-us.iso"
 ```
 
 ### Script for Packer Build processes
