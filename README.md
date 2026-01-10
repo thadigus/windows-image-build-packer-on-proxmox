@@ -185,8 +185,9 @@ proxmox_node             = "PROXMOXNODE"
 proxmox_user             = "root@pam!APIKEY"
 proxmox_apikey           = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX"
 
-// VM Config - if required, defaults to nothing
+// VM Config - if required, defaults to nothing/local-lvm
 vlan_tag                 = ""
+storage_pool             = ""
 
 // Optional Override for path to Ansible playbook (assumes you're starting at top level directory on your Git repo)
 // ansible_provisioner_playbook_path = ""

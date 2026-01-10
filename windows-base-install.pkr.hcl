@@ -48,6 +48,11 @@ variable "vlan_tag" {
     default = ""
 }
 
+variable "storage_pool" {
+    type = string
+    default = "local-lvm"
+}
+
 variable "build_passwd" {
     type = string
     sensitive = true
@@ -111,9 +116,9 @@ source "proxmox-iso" "windows-tpl" {
     token = var.proxmox_apikey
     os = "win11"
     bios = "ovmf"
-    #machine = "q35"
+    machine = "q35"
     efi_config {
-      efi_storage_pool  = "local-lvm"
+      efi_storage_pool  = var.storage_pool
       pre_enrolled_keys = true
       efi_format        = "raw"
       efi_type          = "4m"
@@ -121,7 +126,7 @@ source "proxmox-iso" "windows-tpl" {
     qemu_agent = true
     tpm_config {
       tpm_version 	    = "v2.0"
-      tpm_storage_pool  = "local-lvm"
+      tpm_storage_pool  = var.storage_pool
     }
     cpu_type = "host"
     cores = "2"
@@ -130,7 +135,7 @@ source "proxmox-iso" "windows-tpl" {
     disks {
       type              = "sata"
       disk_size         = "20G"
-      storage_pool      = "local-lvm"
+      storage_pool      = var.storage_pool
       format	          = "raw"
     }
     network_adapters {
