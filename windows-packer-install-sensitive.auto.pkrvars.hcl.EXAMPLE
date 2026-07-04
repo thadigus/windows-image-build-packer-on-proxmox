@@ -18,6 +18,7 @@ service_passwd           = "5ue6t2xkHE@Fhr" // Super secure password for lcoal a
 
 //Proxmox Credentials
 proxmox_host             = "10.x.x.x"
+proxmox_url              = "https://prox.turnerservices.cloud/api2/json"
 proxmox_node             = "PROXMOXNODE"
 proxmox_user             = "root@pam!APIKEY"
 proxmox_apikey           = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX"

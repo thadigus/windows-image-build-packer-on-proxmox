@@ -35,6 +35,11 @@ variable "proxmox_node" {
     type = string
 }
 
+variable "proxmox_url" {
+    type = string
+    default = ""
+}
+
 variable "proxmox_user" {
     type = string
 }
@@ -84,7 +89,7 @@ variable "windows_virtio_iso_path" {
 
 source "proxmox-iso" "windows-tpl" {
 
-    proxmox_url = "https://${var.proxmox_host}:8006/api2/json"
+    proxmox_url = var.proxmox_url != "" ? var.proxmox_url : "https://${var.proxmox_host}:8006/api2/json"
     insecure_skip_tls_verify = true
     node = var.proxmox_node
     boot_iso {
