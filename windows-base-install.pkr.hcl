@@ -172,7 +172,7 @@ build {
     use_proxy     = false
     extra_arguments = [
       "--connection", "winrm",
-      "--extra-vars", "admin_passwd='${var.build_passwd}' service_user='${var.service_user}' service_passwd='${var.service_passwd}' ansible_connection='winrm' ansible_winrm_transport='ntlm' ansible_winrm_server_cert_validation='ignore' ansible_user='Administrator' ansible_password='${var.build_passwd}'"
+      "--extra-vars", "admin_passwd='${var.build_passwd}' service_user='${var.service_user}' service_passwd='${var.service_passwd}' ansible_connection='winrm' ansible_winrm_transport='ntlm' ansible_winrm_server_cert_validation='ignore' ansible_user='Administrator' ansible_password='${var.build_passwd}' ansible_shell_type='cmd'"
     ]
     ansible_env_vars = [
       "ANSIBLE_CONFIG=${path.cwd}/ansible.cfg",
